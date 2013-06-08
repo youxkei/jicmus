@@ -1,0 +1,12 @@
+{
+	"name": "jicmus",
+	"description": "An example project skeleton",
+    "targetType": "executable",
+    "sourcePaths": [
+        "src",
+        "Derelict3/import"
+    ],
+    "libs-posix": [
+        "dl"
+    ]
+}
