@@ -2,6 +2,11 @@ module app;
 
 import bullet;
 import draws;
+import input;
+import view;
+import scene.scene;
+import scene.hoge;
+
 import std.exception : enforce;
 import derelict.sdl2.sdl;
 import derelict.opengl3.gl;
@@ -14,26 +19,40 @@ void main()
     SDL_Init(SDL_INIT_VIDEO);
     scope(exit) SDL_Quit();
 
-    auto window = enforce(SDL_CreateWindow("jicmus", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 960, SDL_WINDOW_OPENGL));
+    SDL_Window* window = enforce(SDL_CreateWindow("jicmus", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 1280, 960, SDL_WINDOW_OPENGL));
     scope(exit) SDL_DestroyWindow(window);
 
     auto context = enforce(SDL_GL_CreateContext(window));
 
     initGL();
-    auto b = Bullet.get().x(100).y(100).drawFunc(&drawArcBullet!(8, 12, 2));
+
+    auto inputHandler = new InputHandler();
+    auto view = new View();
+    view.input = inputHandler.getInputView();
+
+    Scene scene = HogeScene();
 
     SDL_ShowWindow(window);
 
-    double x = 200, y = 200;
-    foreach(_; 0..180)
+    while(scene)
     {
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        b.draw();
-        b.angle_ += 1;
-
-        SDL_GL_SwapWindow(window);
+        inputHandler.handle();
+        scene = scene.update(view);
+        draw(window);
     }
+}
+
+
+void draw(SDL_Window* window)
+{
+    glClear(GL_COLOR_BUFFER_BIT);
+
+    foreach(bullet; Bullet.pool)
+    {
+        bullet.draw();
+    }
+
+    SDL_GL_SwapWindow(window);
 }
 
 void initGL()

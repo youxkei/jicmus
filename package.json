@@ -1,11 +1,10 @@
 {
 	"name": "jicmus",
-	"description": "An example project skeleton",
+	"description": "The essential bullet hell shooter",
     "targetType": "executable",
-    "sourcePaths": [
-        "src",
-        "Derelict3/import"
-    ],
+    "dependencies": {
+        "derelict": "~master"
+    },
     "libs-posix": [
         "dl"
     ]

@@ -8,10 +8,11 @@ alias MoveFunction = void function(ref double, ref double, in Bullet);
 
 class Bullet
 {
-    mixin POOLIZE!2048;
+    mixin POOLIZE!65536;
 
     double x_ = 0, y_ = 0, angle_ = 0;
     size_t frame_;
+    bool available_;
 
     DrawFunction drawFunc_;
     MoveFunction moveFunc_;
@@ -37,6 +38,13 @@ class Bullet
         return cast(T)this;
     }
 
+    T available(this T)(bool available)
+    {
+        available_ = available;
+
+        return cast(T)this;
+    }
+
     T drawFunc(this T)(DrawFunction drawFunc)
     {
         drawFunc_ = drawFunc;
@@ -53,7 +61,7 @@ class Bullet
 
     void draw()
     {
-        if(drawFunc_ !is null)
+        if(drawFunc_ !is null && available_)
         {
             glPushMatrix();
             glTranslated(x_, y_, 0);
