@@ -5,7 +5,7 @@ import draws;
 import input;
 import view;
 import scene.scene;
-import scene.hoge;
+import scene.game.game;
 
 import std.exception : enforce;
 import derelict.sdl2.sdl;
@@ -30,29 +30,21 @@ void main()
     auto view = new View();
     view.input = inputHandler.getInputView();
 
-    Scene scene = HogeScene();
+    Scene scene = GameScene();
 
     SDL_ShowWindow(window);
 
-    while(scene)
+    while(true)
     {
         inputHandler.handle();
+
         scene = scene.update(view);
-        draw(window);
+        if(!scene) break;
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        scene.draw();
+        SDL_GL_SwapWindow(window);
     }
-}
-
-
-void draw(SDL_Window* window)
-{
-    glClear(GL_COLOR_BUFFER_BIT);
-
-    foreach(bullet; Bullet.pool)
-    {
-        bullet.draw();
-    }
-
-    SDL_GL_SwapWindow(window);
 }
 
 void initGL()

@@ -1,6 +1,7 @@
-module bullet;
+module scene.game.bullet;
 
 import util;
+
 import derelict.opengl3.gl;
 
 alias DrawFunction = void function();
@@ -8,7 +9,7 @@ alias MoveFunction = void function(ref double, ref double, in Bullet);
 
 class Bullet
 {
-    mixin POOLIZE!65536;
+    mixin POOLIZE!(2^^16);
 
     double x_ = 0, y_ = 0, angle_ = 0;
     size_t frame_;

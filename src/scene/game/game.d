@@ -1,4 +1,4 @@
-module scene.hoge;
+module scene.game.game;
 
 import util;
 import view;
@@ -6,24 +6,19 @@ import scene.scene;
 
 import derelict.sdl2.sdl;
 
-class HogeScene: Scene
+class GameScene: Scene
 {
     mixin SINGLETON;
 
-    this(){}
-
-    override
-    Scene update(in View view)
+    override Scene update(in View view)
     {
         if(view.input.isKeyPressed(SDL_SCANCODE_ESCAPE))
         {
             return null;
         }
-        if(view.input.isKeyTriggered(SDL_SCANCODE_S))
-        {
-            import std.stdio;
-            "S".writeln;
-        }
         return this;
     }
+
+    override void draw()
+    {}
 }

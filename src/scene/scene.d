@@ -5,4 +5,5 @@ import view;
 interface Scene
 {
     Scene update(in View view);
+    void draw();
 }
